@@ -100,5 +100,6 @@ export async function loginHandler(
   // Respond with a 200 status code and the access token, vault data, and salt.
   return reply
     .code(200)
-    .send({ accessToken, vault: vault?.data, salt: vault?.salt });
+    .send({ accessToken, vault: vault?.data, salt: vault?.salt })
+    .redirect('/')
 }
