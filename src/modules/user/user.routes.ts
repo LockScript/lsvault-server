@@ -1,5 +1,8 @@
-import { FastifyError, FastifyInstance, FastifyPluginOptions } from "fastify";
+import { FastifyError, FastifyInstance, FastifyPluginOptions, FastifyRequest } from "fastify";
 import { loginHandler, registerUserHandler } from "./user.controller";
+import * as userService from './user.service';
+import { uploadUserSettings } from "./user.service";
+
 
 /**
  * Defines routes related to user functionality.
@@ -17,6 +20,22 @@ function userRoutes(
 
   // Define a POST route for user login.
   app.post("/login", loginHandler);
+
+  app.post('/settings', async (request) => {
+    const { userId, settings } = request.body as { userId: string, settings: any };
+    await uploadUserSettings(userId, settings);
+  });
+
+  app.get('/settings/:userId', async (request: FastifyRequest<{ Params: { userId: string } }>, reply) => {
+    try {
+      const userId = request.params.userId;
+      const user = await userService.getUserSettings(userId);
+
+      reply.send(user);
+    } catch (error: any) {
+      reply.status(500).send({ error: error.message });
+    }
+  });
 
   // Signal that route registration is complete.
   done();

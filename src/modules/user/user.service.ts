@@ -2,6 +2,7 @@ import { UserModel } from "./user.model";
 import crypto from "crypto";
 import argon2 from "argon2";
 import { Types } from "mongoose";
+import logger from "../../utils/logger";
 
 /**
  * Generates a random salt for password hashing.
@@ -28,7 +29,47 @@ export async function createUser(input: {
   });
 }
 
+/**
+ * Updates the user's settings.
+ * @param {string} userId - User ID.
+ * @param {Object} settings - New settings for the user.
+ * @returns {Promise<void>} - Promise resolving on successful settings update.
+ * @throws {Error} - Throws an error if the user is not found or update fails.
+ */
+export async function uploadUserSettings(
+  userId: string,
+  settings: Record<string, string>
+): Promise<void> {
+  // Define allowed settings
+  const allowedSettings = ['autoLock', 'raw'];
 
+  // Validate settings here...
+  for (const key in settings) {
+    if (!allowedSettings.includes(key)) {
+      logger.error(`Invalid setting: ${key}`);
+      throw new Error(`Invalid setting: ${key}`);
+    }
+
+    if (settings[key] !== 'true' && settings[key] !== 'false') {
+      logger.error(`Invalid value for ${key}: ${settings[key]}. Only 'true' or 'false' are allowed.`);
+      throw new Error(`Invalid value for ${key}: ${settings[key]}. Only 'true' or 'false' are allowed.`);
+    }
+  }
+
+  logger.info(userId)
+  // Save settings to user record in database
+  const user = await UserModel.findById(userId);
+  logger.info(user)
+
+  if (user) {
+    user.settings = settings;
+    await user.save();
+    logger.info(`User settings updated for user: ${userId}`);
+  } else {
+    logger.error('User not found.');
+    throw new Error('User not found.');
+  }
+}
 
 /**
  * Generates a hash for the provided password using Argon2.
@@ -107,6 +148,15 @@ export async function deleteUserById(userId: string): Promise<void> {
     console.error("Error deleting user:", error);
     throw new Error("Failed to delete user");
   }
+}
+
+export async function getUserSettings(userId: string): Promise<Record<string, boolean | undefined>> {
+  const user = await UserModel.findById(userId);
+  if (!user) {
+    throw new Error('User not found.');
+  }
+  const userObject = user.toObject();
+  return userObject.settings;
 }
 
 /**

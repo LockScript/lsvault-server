@@ -28,6 +28,11 @@ export class User {
   // Define a property 'password' that is required.
   @prop({ required: true })
   password: string;
+
+  @prop({ required: false })
+  settings: {
+    autoLock?: boolean;
+  };
 }
 
 // Create the UserModel using the User class and additional schema options.
