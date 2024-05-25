@@ -1,0 +1,33 @@
+{
+  "name": "lsvault-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsnd --exit-child --transpile-only src/main.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "pino-pretty": "^10.2.3",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "@fastify/cookie": "^9.3.1",
+    "@fastify/cors": "^9.0.1",
+    "@fastify/jwt": "^8.0.1",
+    "@typegoose/typegoose": "^12.5.0",
+    "argon2": "^0.40.1",
+    "axios": "^1.7.2",
+    "dotenv": "^16.4.5",
+    "fastify": "^4.27.0",
+    "fs": "^0.0.1-security",
+    "lodash": "^4.17.21",
+    "mongoose": "^8.4.0",
+    "pino": "^9.1.0"
+  }
+}

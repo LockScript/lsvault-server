@@ -1,0 +1,3 @@
+*.key
+*.env
+.env.local
