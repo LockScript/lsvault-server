@@ -28,6 +28,8 @@ export async function createUser(input: {
   });
 }
 
+
+
 /**
  * Generates a hash for the provided password using Argon2.
  * @param {string} password - Password to be hashed.
@@ -101,11 +103,31 @@ export async function deleteUserById(userId: string): Promise<void> {
     if (!user) {
       throw new Error("User not found");
     }
-
-    // Additional cleanup or actions after deleting the user can be added here
-
   } catch (error) {
     console.error("Error deleting user:", error);
     throw new Error("Failed to delete user");
+  }
+}
+
+/**
+ * Updates the user's email.
+ * @param {string} userId - User ID.
+ * @param {string} newEmail - New email for the user.
+ * @returns {Promise<void>} - Promise resolving on successful email update.
+ * @throws {Error} - Throws an error if the user is not found or update fails.
+ */
+export async function updateEmail(
+  userId: string,
+  newEmail: string
+): Promise<void> {
+  try {
+    const user = await UserModel.findByIdAndUpdate(userId, { email: newEmail });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+  } catch (error) {
+    console.error("Error updating email:", error);
+    throw new Error("Failed to update email");
   }
 }
