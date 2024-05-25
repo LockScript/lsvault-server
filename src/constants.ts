@@ -9,7 +9,7 @@ dotenv.config();
  * If not explicitly specified, it defaults to a local MongoDB instance with the database name 'password-manager'.
  * Adjust this value to connect to your MongoDB database, specifying the database's location and name.
  */
-export const DB_CONNECTION_STRING = process.env.DB_CONNECTION_STRING || "mongodb://localhost:27017/Cluster0";
+export const DB_CONNECTION_STRING = process.env.DB_CONNECTION_STRING || "mongodb://localhost:27017/password-manager";
 
 // CORS Configuration
 /**
