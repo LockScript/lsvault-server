@@ -131,3 +131,43 @@ export async function updateEmail(
     throw new Error("Failed to update email");
   }
 }
+
+/**
+ * Changes the user's password.
+ * @param {string} userId - User ID.
+ * @param {string} currentPassword - Current password of the user.
+ * @param {string} newPassword - New password for the user.
+ * @returns {Promise<void>} - Promise resolving on successful password change.
+ * @throws {Error} - Throws an error if the user is not found, current password is invalid, or password change fails.
+ */
+export async function changePassword(
+  userId: string,
+  currentPassword: string,
+  newPassword: string
+): Promise<void> {
+  try {
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const isCurrentPasswordValid = await argon2.verify(
+      user.password,
+      currentPassword
+    );
+
+    if (!isCurrentPasswordValid) {
+      throw new Error("Invalid current password");
+    }
+
+    const hashedNewPassword = await genHash(newPassword);
+
+    await UserModel.findByIdAndUpdate(userId, {
+      password: hashedNewPassword,
+    });
+  } catch (error) {
+    console.error("Error changing password:", error);
+    throw new Error("Failed to change password");
+  }
+}
