@@ -56,6 +56,25 @@ To start the server in development mode, use the command `npm run dev`.
 
 The server provides API endpoints for user and vault operations. These are defined in the `src/modules/user/` and `src/modules/vault/` directories respectively.
 
+## Roadmap
+
+Here are some cool features we plan to add in the future:
+
+- **Multi-factor authentication**: Enhance security by adding support for multi-factor authentication methods such as SMS verification or authenticator apps.
+- **File encryption**: Allow users to securely store and manage encrypted files within their vaults.
+- **Sharing and collaboration**: Enable users to share vaults or specific items with other users, allowing for secure collaboration.
+- **Audit logs**: Implement a logging system to track and record all user actions within the application for auditing purposes.
+- **Browser extensions**: Develop browser extensions for popular web browsers to provide seamless integration with the LockScript Vault.
+- **Mobile app**: Create a mobile application for iOS and Android devices, allowing users to access their vaults on the go.
+
+### Urgent
+
+- **Full client-side encryption**: Implement a feature that encrypts all sensitive information on the client-side before it is sent to the server. This ensures that data remains secure even if the server is compromised.
+
+Please note that the urgency of this feature is due to its critical importance in ensuring the security of user data.
+
+We are constantly working on improving the LockScript Vault and adding new features. Stay tuned for updates!
+
 ## Contributing
 
 Thank you for considering contributing to the lsvault-server project! We welcome all contributions that help improve the project.
