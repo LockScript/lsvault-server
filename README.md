@@ -66,6 +66,7 @@ Here are some cool features we plan to add in the future:
 - **Audit logs**: Implement a logging system to track and record all user actions within the application for auditing purposes.
 - **Browser extensions**: Develop browser extensions for popular web browsers to provide seamless integration with the LockScript Vault.
 - **Mobile app**: Create a mobile application for iOS and Android devices, allowing users to access their vaults on the go.
+- **OAuth login**: Allow users to login with many different OAuth providers such as Google, Microsoft, Github, etc..
 
 ### Urgent
 
