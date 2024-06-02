@@ -7,6 +7,8 @@ import {
 import { createVault, findVaultByUser } from "../vault/vault.service";
 import { COOKIE_DOMAIN, HTTPONLY, SAMESITE, SECURE } from "../../constants";
 import logger from "../../utils/logger";
+import { UserModel } from "./user.model";
+import argon2 from "argon2";
 
 /**
  * Handles the registration of a new user.
@@ -29,7 +31,7 @@ export async function registerUserHandler(
 
     // Generate a salt for the user's vault.
     const salt = generateSalt();
-    
+
     // Create a vault for the user.
     const vault = await createVault({ user: user._id.toString(), salt });
 
@@ -102,4 +104,72 @@ export async function loginHandler(
     .code(200)
     .send({ accessToken, vault: vault?.data, salt: vault?.salt })
     .redirect('/')
+}
+
+/**
+ * Verifies a user's hashed password.
+ * @param {string} userId - User ID.
+ * @param {string} hashedPassword - Hashed password to be verified.
+ * @returns {Promise<boolean>} - Promise resolving to whether the password is valid.
+ * @throws {Error} - Throws an error if the user is not found.
+ */
+export async function verifyHashedPassword(
+  request: FastifyRequest<{
+    Body: {
+      userId: string;
+      hashedPassword: string;
+    };
+  }>,
+  reply: FastifyReply
+): Promise<void> {
+  const { userId, hashedPassword } = request.body;
+
+  try {
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      return reply.status(404).send({ message: 'User not found' });
+    }
+
+    const isPasswordValid = await argon2.verify(user.password, hashedPassword);
+
+    if (!isPasswordValid) {
+      return reply.status(401).send({ message: 'Invalid password' });
+    }
+
+    return reply
+      .code(200)
+  } catch (error: any) {
+    reply.status(500).send({ error: error.toString() });
+  }
+}
+
+export async function verifyPassword(
+  request: FastifyRequest<{
+    Body: {
+      userId: string;
+      password: string;
+    };
+  }>,
+  reply: FastifyReply
+): Promise<void> {
+  const { userId, password } = request.body;
+
+  try {
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      return reply.status(404).send({ message: 'User not found' });
+    }
+
+    const isPasswordValid = await argon2.verify(user.password, password);
+
+    if (!isPasswordValid) {
+      return reply.status(401).send({ message: 'Invalid password' });
+    }
+
+    return reply.code(200).send({ message: 'Password is valid' });
+  } catch (error: any) {
+    reply.status(500).send({ error: error.toString() });
+  }
 }

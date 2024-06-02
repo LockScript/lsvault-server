@@ -1,5 +1,5 @@
 import { FastifyError, FastifyInstance, FastifyPluginOptions, FastifyRequest } from "fastify";
-import { loginHandler, registerUserHandler } from "./user.controller";
+import { loginHandler, registerUserHandler, verifyPassword } from "./user.controller";
 import * as userService from './user.service';
 import { uploadUserSettings } from "./user.service";
 
@@ -20,6 +20,8 @@ function userRoutes(
 
   // Define a POST route for user login.
   app.post("/login", loginHandler);
+
+  app.post('/validate', verifyPassword )
 
   app.post('/settings', async (request) => {
     const { userId, settings } = request.body as { userId: string, settings: any };

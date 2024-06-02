@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsnd --exit-child --transpile-only src/main.ts"
+    "dev": "tsnd --exit-child --transpile-only src/main.ts",
+    "start": "tsc && node src/main.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
+    "@types/lodash": "^4.17.4",
     "@types/node": "^20.12.12",
     "pino-pretty": "^10.2.3",
     "ts-node": "^10.9.2",
@@ -23,6 +26,7 @@
     "@typegoose/typegoose": "^12.5.0",
     "argon2": "^0.40.1",
     "axios": "^1.7.2",
+    "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
     "fastify": "^4.27.0",
     "fs": "^0.0.1-security",
